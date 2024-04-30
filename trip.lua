@@ -150,7 +150,7 @@ platform = {
   y = 0,
   width = 10,
   height = 3,
-  colour = 14,
+  colour = 6,
   dx = scroll_speed,
   dy = 0,
 }
@@ -165,7 +165,7 @@ end
 -- starting platform
 start_platform = platform:new({
     x = max_x / 2 - 4,
-    y = max_y / 2 + 5
+    y = max_y / 2 + 6
   })
 add(platforms, start_platform)
 
