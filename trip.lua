@@ -10,6 +10,7 @@ scroll_speed = -1
 started = false
 ended = false
 score = 0
+timer = 0
 
 -- player
 p = {
@@ -194,6 +195,43 @@ function star:draw()
   circfill(self.x, self.y, self.size, self.colour)
 end
 
+-- balloons
+balloons = {}
+-- balloon
+balloon = {
+  x = 0,
+  y = 0,
+  size = 3,
+  colour = 11,
+  score = 10
+}
+balloon.__index = balloon
+function balloon:new(o)
+  return setmetatable(o or {}, self)
+end
+function balloon:update()
+  self.x += scroll_speed
+  -- move to other side on touch of walls
+  if(self.x < -self.size) then 
+    del(balloons, self)
+  end
+
+  if(self:collide(p)) then
+    score += self.score
+    del(balloons, self)
+  end
+end
+function balloon:draw()
+  circfill(self.x, self.y, self.size, self.colour)
+end
+function balloon:collide(o)
+  return self.x >= (o.x - o.size) and self.x <= (o.x + o.size) and self.y >= (o.y - o.size) and self.y <= (o.y + o.size)
+end
+function balloon:init()
+  self.x = max_x + self.size
+  self.y = rnd(max_y)
+end
+
 -- game
 function start()
   started = true
@@ -201,7 +239,7 @@ function start()
   del(platforms, start_platform)
 
   -- create enemies
-  for i = 0,8 do
+  for i = 0,7 do
     e = enemy:new()
     e:init()
     add(enemies, e)
@@ -231,8 +269,17 @@ function _update()
     if (btnp(4)) then start() end
     if (btnp(5)) then start() end
   elseif not ended then
-    i = time()
-    score += flr(i)
+    timer += 1 / 30
+    score += 1 / 30
+    
+    printh(timer * 30)
+
+    if(flr(timer * 30) % 25 == 0 and flr(rnd(7)) == 1) then
+      b = balloon:new()
+      b:init()
+      add(balloons, b)
+    end
+
     if (btnp(4)) then p:flap()  end
     if (btnp(5)) then p:flap()  end
     if (btn(0)) then p:move_left() end
@@ -243,6 +290,9 @@ function _update()
     end
     for e in all(enemies) do
       e:update()
+    end
+    for b in all(balloons) do
+      b:update()
     end
     p:update()
   end
@@ -259,13 +309,16 @@ function _draw()
   for pl in all(platforms) do
     pl:draw()
   end
+  for b in all(balloons) do
+    b:draw()
+  end
   p:draw()
 
   -- lives
   print("lives: "..p.lives, 8, 8, 7)
 
   -- score
-  print("score: "..score, 8, 16, 7)
+  print("score: "..flr(score), 8, 16, 7)
 
   -- water
   rectfill(0, max_y, max_x, max_y - 10, 12)
