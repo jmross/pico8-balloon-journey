@@ -139,8 +139,7 @@ function enemy:init()
   self.x = max_x + 1
   self.y = rnd(max_y)
   self.dx = -rnd(2)
-  -- TODO
-  self.dy = rnd(1) + (flr(rnd(2)) * -1)
+  self.dy = rnd(1) * rnd({-1, 1})
 end
 
 -- platforms
@@ -177,7 +176,7 @@ star = {
   x = 0,
   y = 0,
   size = 0,
-  colour = 10,
+  colour = 1,
 }
 star.__index = star
 function star:new(o)
@@ -250,15 +249,19 @@ function lose()
 end
 
 function _init()
+  -- change pallete for colour 0
+  pal(0,129,1)
+
   -- disable btnp repeats
   poke(0X5F5C, 255)
 
   -- create stars
-  for i = 0,35 do
+  for i = 0,25 do
     s = star:new({
         x = rnd(max_x),
         y = rnd(max_y),
-        size = rnd(1.5)
+        size = 0,
+        colour = rnd({1, 13})
       })
     add(stars, s)
   end
@@ -272,8 +275,6 @@ function _update()
     timer += 1 / 30
     score += 1 / 30
     
-    printh(timer * 30)
-
     if(flr(timer * 30) % 25 == 0 and flr(rnd(7)) == 1) then
       b = balloon:new()
       b:init()
