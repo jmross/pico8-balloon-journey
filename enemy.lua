@@ -8,6 +8,7 @@ enemy = {
   dy = 0,
 }
 enemy.__index = enemy
+
 function enemy:update()
   self.x += self.dx
   self.y += self.dy

@@ -9,9 +9,11 @@ star = {
   colour = 1,
 }
 star.__index = star
+
 function star:new(o)
   return setmetatable(o or {}, self)
 end
+
 function star:update()
   self.x += self.dx
   self.y += self.dy
@@ -22,6 +24,7 @@ function star:update()
     self.y = rnd(max_y)
   end
 end
+
 function star:draw()
   circfill(self.x, self.y, self.size, self.colour)
 end
