@@ -30,10 +30,6 @@ function enemy:new(o)
   return setmetatable(o or {}, self)
 end
 
-function enemy:collide(o)
-  return self.x >= (o.x - o.size) and self.x <= (o.x + o.size) and self.y >= (o.y - o.size) and self.y <= (o.y + o.size)
-end
-
 function enemy:init()
   self.x = max_x + 1
   self.y = rnd(max_y)

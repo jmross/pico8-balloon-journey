@@ -45,6 +45,13 @@ function player:move_right()
   end
 end
 
+function player:collide(o)
+  return ((self.x - self.size) <= (o.x + o.size) and
+          (self.x + self.size) >= (o.x - o.size) and
+          (self.y - self.size) <= (o.y + o.size) and
+          (self.y + self.size) >= (o.y - o.size))
+end
+
 function player:flap()
   if(self.dy > -self.max_y_speed) then
     self.ddy = -self.y_accel

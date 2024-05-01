@@ -90,7 +90,7 @@ function _update()
 
     for e in all(enemies) do
       e:update()
-      if(e:collide(player)) then
+      if(player:collide(e)) then
         player:damage()
         e:init()
       end
@@ -102,7 +102,7 @@ function _update()
 
     for b in all(balloons) do
       b:update()
-      if(b:collide(player)) then
+      if(player:collide(b)) then
         game.score += b.score
         del(balloons, b)
       end
