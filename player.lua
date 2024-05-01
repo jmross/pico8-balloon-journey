@@ -1,12 +1,12 @@
 
 -- player
-p = {
+player = {
   lives = 3,
 
   size = 4,
   x = 64,
   y = 64,
-  dx = scroll_speed,
+  dx = 0,
   dy = 0,
   ddx = 0,
   ddy = 0,
@@ -16,45 +16,46 @@ p = {
 
   max_x_speed = 2,
   max_y_speed = 3,
-  max_grav_speed = 3
+  max_grav_speed = 3,
+
+  x_resist = 0.98,
 }
 
-function p:damage()
+function player:damage()
   self.lives -= 1
-  if(self.lives <= 0) then
-    lose()
-  end
 end
 
-function p:draw()
+function player:draw()
   circfill(self.x, self.y, self.size, 7)
 end
 
-function p:move_left()
+function player:move_left()
   if(self.ddy < 0) then
     self.ddx = -self.x_accel
-    self.dx += self.ddx
+  else
+    self.ddx = 0
   end
 end
 
-function p:move_right()
+function player:move_right()
   if(self.ddy < 0) then
     self.ddx = self.x_accel
-    self.dx += self.ddx
+  else
+    self.ddx = 0
   end
 end
 
-function p:flap()
+function player:flap()
   if(self.dy > -self.max_y_speed) then
     self.ddy = -self.y_accel
   end
 end
 
-function p:update()
+function player:update()
   self.dy += self.ddy
+  self.dx += self.ddx
   self.x += self.dx
   self.y += self.dy
-  self.ddy = grav
 
   if(self.dx > self.max_x_speed) then self.dx = self.max_x_speed end
   if(self.dx < -self.max_x_speed) then self.dx = -self.max_x_speed end
@@ -62,7 +63,7 @@ function p:update()
   if(self.dy < -self.max_grav_speed) then self.dy = -self.max_grav_speed end
 
   -- slow down x speed over time
-  self.dx *= x_resist
+  self.dx *= self.x_resist
   -- stop completely
   if(abs(self.dx) < 0.01) then self.dx = 0 end
 

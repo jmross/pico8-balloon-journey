@@ -4,30 +4,38 @@ min_y = 0
 max_x = 127
 max_y = 127
 
-grav = 0
-x_resist = 0.98
-scroll_speed = -1
-started = false
-ended = false
-score = 0
-timer = 0
+stars = {}
+enemies = {}
+platforms = {}
+balloons = {}
 
 -- game
-function start()
-  started = true
-  grav = 0.25
-  del(platforms, start_platform)
+game = {
+  grav = 0,
+  scroll_speed = -1,
+  started = false,
+  ended = false,
+  score = 0,
+  timer = 0,
 
-  -- create enemies
-  for i = 0,7 do
-    e = enemy:new()
-    e:init()
-    add(enemies, e)
-  end
-end
-function lose()
-  ended = true 
-end
+  start = function(this)
+    this.started = true
+    this.grav = 0.25
+    player.dx = game.scroll_speed
+    del(platforms, start_platform)
+
+    -- create enemies
+    for i = 0,7 do
+      e = enemy:new()
+      e:init()
+      add(enemies, e)
+    end
+  end,
+
+  lose = function(this)
+    this.ended = true 
+  end,
+}
 
 function _init()
   -- change pallete for colour 0
@@ -41,42 +49,77 @@ function _init()
     s = star:new({
         x = rnd(max_x),
         y = rnd(max_y),
-        size = 0,
-        colour = rnd({1, 13})
+        colour = rnd({1, 13}),
+        dx = game.scroll_speed,
       })
     add(stars, s)
   end
+
+  -- starting platform
+  start_platform = platform:new({
+      x = max_x / 2 - 4,
+      y = max_y / 2 + 6
+    })
+  add(platforms, start_platform)
+
 end
 
 function _update()
-  if not started then
-    if (btnp(4)) then start() end
-    if (btnp(5)) then start() end
-  elseif not ended then
-    timer += 1 
-    score += 1 / 30
+  if not game.started then
+    if (btnp(4)) then game:start() end
+    if (btnp(5)) then game:start() end
+  elseif not game.ended then
+    game.timer += 1 
+    game.score += 1 / 30
     
-    if(flr(timer) % 25 == 0 and flr(rnd(7)) == 1) then
+    if(flr(game.timer) % 25 == 0 and flr(rnd(7)) == 1) then
       b = balloon:new()
+      b.dx = game.scroll_speed
       b:init()
       add(balloons, b)
     end
 
-    if (btnp(4)) then p:flap()  end
-    if (btnp(5)) then p:flap()  end
-    if (btn(0)) then p:move_left() end
-    if (btn(1)) then p:move_right() end
+    if (btnp(4)) then player:flap()  end
+    if (btnp(5)) then player:flap()  end
+    if (btn(0)) then player:move_left() end
+    if (btn(1)) then player:move_right() end
 
     for s in all(stars) do
       s:update()
     end
+
     for e in all(enemies) do
       e:update()
+      if(e:collide(player)) then
+        player:damage()
+        e:init()
+      end
     end
+
+    for p in all(platforms) do
+      p:update()
+    end
+
     for b in all(balloons) do
       b:update()
+      if(b:collide(player)) then
+        game.score += b.score
+        del(balloons, b)
+      end
+
+      -- move to other side on touch of walls
+      if(b.x < -b.size) then 
+        del(balloons, b)
+      end
     end
-    p:update()
+
+    player:update()
+
+    if(player.lives <= 0) then
+      game:lose()
+    end
+
+    player.ddy = game.grav
   end
 end
 
@@ -85,27 +128,30 @@ function _draw()
   for s in all(stars) do
     s:draw()
   end
+
   for e in all(enemies) do
     e:draw()
   end
-  for pl in all(platforms) do
-    pl:draw()
+
+  for p in all(platforms) do
+    p:draw()
   end
+
   for b in all(balloons) do
     b:draw()
   end
-  p:draw()
+  player:draw()
 
   -- lives
-  print("lives: "..p.lives, 8, 8, 7)
+  print("lives: "..player.lives, 8, 8, 7)
 
   -- score
-  print("score: "..flr(score), 8, 16, 7)
+  print("score: "..flr(game.score), 8, 16, 7)
 
   -- water
   rectfill(0, max_y, max_x, max_y - 10, 12)
 
-  if ended then
+  if game.ended then
     print("game over", max_x / 2 - 15, max_y / 2, 7)
   end
 end

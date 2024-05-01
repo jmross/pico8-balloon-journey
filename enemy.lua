@@ -1,6 +1,4 @@
 
--- enemies
-enemies = {}
 -- enemy
 enemy = {
   size = 2,
@@ -20,11 +18,6 @@ function enemy:update()
 
   -- re-init on touch of walls
   if(self.x < -self.size) then 
-    self:init()
-  end
-
-  if(self:collide(p)) then
-    p:damage()
     self:init()
   end
 end
