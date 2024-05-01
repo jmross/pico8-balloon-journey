@@ -4,7 +4,13 @@ __lua__
 -- trip
 -- by jmross
 
-#include trip.lua
+#include main.lua
+
+#include player.lua
+#include enemy.lua
+#include platform.lua
+#include star.lua
+#include balloon.lua
 
 __gfx__
 00000000777777770000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
