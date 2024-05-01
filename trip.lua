@@ -272,10 +272,10 @@ function _update()
     if (btnp(4)) then start() end
     if (btnp(5)) then start() end
   elseif not ended then
-    timer += 1 / 30
+    timer += 1 
     score += 1 / 30
     
-    if(flr(timer * 30) % 25 == 0 and flr(rnd(7)) == 1) then
+    if(flr(timer) % 25 == 0 and flr(rnd(7)) == 1) then
       b = balloon:new()
       b:init()
       add(balloons, b)
