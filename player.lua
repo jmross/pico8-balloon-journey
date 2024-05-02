@@ -95,10 +95,10 @@ function player:update()
   -- bounce off ceiling
   if(self.y < self.size) then self.dy = 0.5*abs(self.dy) self.y = self.size end
 
-  -- damage if touch floor
+  -- lose if touch floor
   if(self.y > max_y - self.size) then
     self.y = max_y - self.size
-    self:damage()
+    self.lives = 0
   end
 
   -- stop on left/right walls
