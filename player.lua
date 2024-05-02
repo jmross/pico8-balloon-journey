@@ -20,9 +20,19 @@ player = {
 
   x_resist = 0.98,
 
-  invincible = nil,
   visible = true,
+
+  -- coroutines
+  invincible = nil,
+  game_over = nil
 }
+
+function player:stop()
+  self.dx = 0
+  self.dy = 0
+  self.ddx = 0
+  self.ddy = 0
+end
 
 function player:damage()
   self.lives -= 1
@@ -95,12 +105,6 @@ function player:update()
   -- bounce off ceiling
   if(self.y < self.size) then self.dy = 0.5*abs(self.dy) self.y = self.size end
 
-  -- lose if touch floor
-  if(self.y > max_y - self.size) then
-    self.y = max_y - self.size
-    self.lives = 0
-  end
-
   -- stop on left/right walls
   if(self.x < self.size) then self.dx = 0 self.x = self.size end
   if(self.x > max_x - self.size) then self.dx = 0 self.x = max_x - self.size end
@@ -110,5 +114,4 @@ function player:update()
   else
     self.invincible = nil
   end
-
 end

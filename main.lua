@@ -15,6 +15,7 @@ game = {
   scroll_speed = -1,
   started = false,
   ended = false,
+  game_over = false,
   score = 0,
   timer = 0,
 
@@ -32,7 +33,22 @@ game = {
     end
   end,
 
-  lose = function(this)
+  lose = function(this, animate)
+    if(animate) then
+      player:stop()
+      player.invincible = nil
+      player.visible = true
+
+      player.game_over = cocreate(function()
+        for i = 1,30 do
+          yield()
+        end
+        player.ddy = -player.y_accel
+        yield()
+        player.ddy = game.grav
+      end)
+    end
+
     this.ended = true 
   end,
 }
@@ -115,11 +131,32 @@ function _update()
 
     player:update()
 
+    -- lose if touch floor
+    if(player.y >= max_y) then
+      game:lose(false)
+    end
+
     if(player.lives <= 0) then
-      game:lose()
+      game:lose(true)
+      return
     end
 
     player.ddy = game.grav
+
+  elseif game.ended then
+
+    if player.game_over and costatus(player.game_over) != 'dead' then
+      coresume(player.game_over)
+    else
+      player.game_over = nil
+    end
+
+    player:update()
+
+    if(player.y >= max_y) then
+      game.game_over = true
+    end
+
   end
 end
 
@@ -151,7 +188,7 @@ function _draw()
   -- water
   rectfill(0, max_y, max_x, max_y - 10, 12)
 
-  if game.ended then
+  if game.game_over then
     print("game over", max_x / 2 - 15, max_y / 2, 7)
   end
 end
