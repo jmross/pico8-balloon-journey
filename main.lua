@@ -90,7 +90,7 @@ function _update()
 
     for e in all(enemies) do
       e:update()
-      if(player:collide(e)) then
+      if(not player.invincible and player:collide(e)) then
         player:damage()
         e:init()
       end

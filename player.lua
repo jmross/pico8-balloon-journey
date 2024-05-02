@@ -19,14 +19,36 @@ player = {
   max_grav_speed = 3,
 
   x_resist = 0.98,
+
+  invincible = nil,
+  visible = true,
 }
 
 function player:damage()
   self.lives -= 1
+
+  self.invincible = cocreate(function()
+
+    self.visible = false
+
+    for i = 1,5 do
+      for j = 1,5 do
+        yield()
+      end
+      if(i % 2 == 1) then
+        self.visible = true
+      else
+        self.visible = false
+      end
+    end
+
+  end)
 end
 
 function player:draw()
-  circfill(self.x, self.y, self.size, 7)
+  if self.visible then
+    circfill(self.x, self.y, self.size, 7)
+  end
 end
 
 function player:move_left()
@@ -86,4 +108,11 @@ function player:update()
   -- stop on left/right walls
   if(self.x < self.size) then self.dx = 0 self.x = self.size end
   if(self.x > max_x - self.size) then self.dx = 0 self.x = max_x - self.size end
+
+  if self.invincible and costatus(self.invincible) != 'dead' then
+    coresume(self.invincible)
+  else
+    self.invincible = nil
+  end
+
 end
