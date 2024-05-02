@@ -107,8 +107,8 @@ function _update()
         del(balloons, b)
       end
 
-      -- move to other side on touch of walls
-      if(b.x < -b.size) then 
+      -- delete balloon on touch of walls
+      if(b.x < min_x - b.size) then 
         del(balloons, b)
       end
     end

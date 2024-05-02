@@ -18,7 +18,7 @@ function enemy:update()
   if(self.y > max_y - self.size) then self.dy = -abs(self.dy) self.y = max_y - self.size end
 
   -- re-init on touch of walls
-  if(self.x < -self.size) then 
+  if(self.x < min_x - self.size) then 
     self:init()
   end
 end

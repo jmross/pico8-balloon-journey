@@ -19,7 +19,7 @@ function star:update()
   self.y += self.dy
 
   -- move to other side on touch of walls
-  if(self.x < -self.size) then 
+  if(self.x < min_x - self.size) then 
     self.x = max_x + self.size
     self.y = rnd(max_y)
   end
