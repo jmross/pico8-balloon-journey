@@ -12,11 +12,11 @@ player = {
   ddy = 0,
 
   x_accel = 0.5,
-  y_accel = 3,
+  y_accel = 1.5,
 
   max_x_speed = 2,
-  max_y_speed = 3,
-  max_grav_speed = 3,
+  max_y_speed = 2,
+  max_grav_speed = 2,
 
   x_resist = 0.98,
 
@@ -103,7 +103,7 @@ function player:update()
   if(abs(self.dx) < 0.01) then self.dx = 0 end
 
   -- bounce off ceiling
-  if(self.y < self.size) then self.dy = 0.5*abs(self.dy) self.y = self.size end
+  if(self.y < self.size) then self.dy = abs(self.dy) self.y = self.size end
 
   -- stop on left/right walls
   if(self.x < self.size) then self.dx = 0 self.x = self.size end

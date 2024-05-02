@@ -21,7 +21,7 @@ game = {
 
   start = function(this)
     this.started = true
-    this.grav = 0.25
+    this.grav = 0.1
     player.dx = game.scroll_speed
     del(platforms, start_platform)
 
@@ -43,7 +43,7 @@ game = {
         for i = 1,30 do
           yield()
         end
-        player.ddy = -player.y_accel
+        player.ddy = -3
         yield()
         player.ddy = game.grav
       end)
