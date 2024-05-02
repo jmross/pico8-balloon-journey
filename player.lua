@@ -35,11 +35,7 @@ function player:damage()
       for j = 1,5 do
         yield()
       end
-      if(i % 2 == 1) then
-        self.visible = true
-      else
-        self.visible = false
-      end
+      self.visible = (i % 2 == 1)
     end
 
   end)
