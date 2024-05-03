@@ -1,4 +1,10 @@
 
+function delay(i)
+  for i = 1,i do
+    yield()
+  end
+end
+
 min_x = 0
 min_y = 0
 max_x = 127
@@ -40,9 +46,7 @@ game = {
       player.visible = true
 
       player.game_over = cocreate(function()
-        for i = 1,30 do
-          yield()
-        end
+        delay(30)
         player.ddy = -3
         yield()
         player.ddy = game.grav
@@ -95,7 +99,15 @@ function _update()
       add(balloons, b)
     end
 
-    if (btnp(4)) then player:flap()  end
+    if (btn(4)) then 
+      if(player.flying) then
+        coresume(player.flying)
+      else
+        player:fly()
+      end
+    else
+      player.flying = nil
+    end
     if (btnp(5)) then player:flap()  end
     if (btn(0)) then player:move_left() end
     if (btn(1)) then player:move_right() end

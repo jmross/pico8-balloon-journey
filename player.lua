@@ -24,6 +24,7 @@ player = {
 
   -- coroutines
   invincible = nil,
+  flying = nil,
   game_over = nil
 }
 
@@ -42,9 +43,7 @@ function player:damage()
     self.visible = false
 
     for i = 1,5 do
-      for j = 1,5 do
-        yield()
-      end
+      delay(5)
       self.visible = (i % 2 == 1)
     end
 
@@ -78,6 +77,17 @@ function player:collide(o)
           (self.x + self.size) >= (o.x - o.size) and
           (self.y - self.size) <= (o.y + o.size) and
           (self.y + self.size) >= (o.y - o.size))
+end
+
+function player:fly()
+  player:flap()
+  self.flying = cocreate(function()
+    delay(5)
+    while true do
+      player:flap()
+      delay(10)
+    end
+  end)
 end
 
 function player:flap()
