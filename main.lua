@@ -82,8 +82,8 @@ end
 
 function _update()
   if not game.started then
-    if (btnp(4)) then game:start() end
-    if (btnp(5)) then game:start() end
+    if (btnp(4)) then game:start() player:flap() end
+    if (btnp(5)) then game:start() player:flap() end
   elseif not game.ended then
     game.timer += 1 
     game.score += 1 / 30
