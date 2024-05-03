@@ -27,6 +27,9 @@ game = {
   score = 0,
   timer = 0,
 
+  start_message = "press ❎ or 🅾️ to start",
+  game_over_message = "game over",
+
   start = function(this)
     this.started = true
     this.grav = 0.1
@@ -202,7 +205,11 @@ function _draw()
   -- water
   rectfill(0, max_y, max_x, max_y - 10, 12)
 
+  if not game.started then
+    print(game.start_message, max_x / 2 - #game.start_message * 2, 3 * max_y / 4, 7)
+  end
+
   if game.game_over then
-    print("game over", max_x / 2 - 18, max_y / 2, 7)
+    print(game.game_over_message, max_x / 2 - #game.game_over_message * 2, max_y / 2, 7)
   end
 end
