@@ -1,7 +1,7 @@
 pico-8 cartridge // http://www.pico-8.com
 version 42
 __lua__
--- trip
+-- Balloon Journey
 -- by jmross
 
 #include main.lua
