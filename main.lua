@@ -1,5 +1,9 @@
-shake_intensity = 0
-shake_control = 5
+
+function delay(i)
+  for i = 1,i do
+    yield()
+  end
+end
 
 function shake()
     local shake_x=rnd(shake_intensity) - (shake_intensity /2)
@@ -13,11 +17,8 @@ function shake()
     if shake_intensity < .3 then shake_intensity = 0 end
 end
 
-function delay(i)
-  for i = 1,i do
-    yield()
-  end
-end
+shake_intensity = 0
+shake_control = 5
 
 min_x = 0
 min_y = 0
