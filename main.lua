@@ -201,6 +201,6 @@ function _draw()
   rectfill(0, max_y, max_x, max_y - 10, 12)
 
   if game.game_over then
-    print("game over", max_x / 2 - 15, max_y / 2, 7)
+    print("game over", max_x / 2 - 18, max_y / 2, 7)
   end
 end
