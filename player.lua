@@ -15,6 +15,8 @@ player = {
 
   top_sprite = 0,
   bottom_sprite = 16,
+  bottom_sprites = {16, 17, 18},
+  death_sprite = 19,
 
   facing_left = false,
 
@@ -32,6 +34,7 @@ player = {
   -- coroutines
   invincible = nil,
   flying = nil,
+  animate = nil,
   game_over = nil
 }
 
@@ -59,7 +62,11 @@ end
 
 function player:draw()
   if self.visible then
-    spr(self.top_sprite, self.x, self.y, 1, 1, self.facing_left, false)
+    if self.lives > 0 then
+      spr(self.top_sprite, self.x, self.y, 1, 1, self.facing_left, false)
+    else
+      self.bottom_sprite = self.death_sprite
+    end
     spr(self.bottom_sprite, self.x, self.y + sprite_height, 1, 1, self.facing_left, false)
   end
 end
@@ -101,6 +108,15 @@ function player:fly()
 end
 
 function player:flap()
+  self.animate = cocreate(function()
+    yield()
+    self.bottom_sprite = self.bottom_sprites[2]
+    yield()
+    self.bottom_sprite = self.bottom_sprites[3]
+    yield()
+    self.bottom_sprite = self.bottom_sprites[1]
+  end)
+
   if(self.dy > -self.max_y_speed) then
     self.ddy = -self.y_accel
   end
@@ -133,5 +149,11 @@ function player:update()
     coresume(self.invincible)
   else
     self.invincible = nil
+  end
+
+  if self.animate and costatus(self.animate) != 'dead' then
+    coresume(self.animate)
+  else
+    self.animate = nil
   end
 end
