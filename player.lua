@@ -52,7 +52,7 @@ end
 
 function player:draw()
   if self.visible then
-    circfill(self.x, self.y, self.size, 7)
+    spr(0, self.x, self.y)
   end
 end
 

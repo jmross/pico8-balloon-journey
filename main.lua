@@ -9,6 +9,8 @@ min_x = 0
 min_y = 0
 max_x = 127
 max_y = 127
+sprite_width = 8
+sprite_height = 8
 
 stars = {}
 enemies = {}
