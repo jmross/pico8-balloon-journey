@@ -13,10 +13,18 @@ function shake()
     if shake_intensity < .3 then shake_intensity = 0 end
 end
 
+function delay(i)
+  for i = 1,i do
+    yield()
+  end
+end
+
 min_x = 0
 min_y = 0
 max_x = 127
 max_y = 127
+sprite_width = 8
+sprite_height = 8
 
 stars = {}
 enemies = {}
@@ -32,6 +40,9 @@ game = {
   game_over = false,
   score = 0,
   timer = 0,
+
+  start_message = "press ❎ or 🅾️ to start",
+  game_over_message = "game over",
 
   start = function(this)
     this.started = true
@@ -54,9 +65,7 @@ game = {
       player.visible = true
 
       player.game_over = cocreate(function()
-        for i = 1,30 do
-          yield()
-        end
+        delay(30)
         player.ddy = -3
         yield()
         player.ddy = game.grav
@@ -74,6 +83,10 @@ function _init()
   -- disable btnp repeats
   poke(0X5F5C, 255)
 
+  -- place player
+  player.x = max_x / 2 - player.width / 2
+  player.y = max_y / 2
+
   -- create stars
   for i = 0,25 do
     s = star:new({
@@ -86,30 +99,37 @@ function _init()
   end
 
   -- starting platform
-  start_platform = platform:new({
-      x = max_x / 2 - 4,
-      y = max_y / 2 + 6
-    })
+  start_platform = platform:new()
+  start_platform.x = max_x / 2 - start_platform.width / 2
+  start_platform.y = max_y / 2 + player.height
   add(platforms, start_platform)
 
 end
 
 function _update()
   if not game.started then
-    if (btnp(4)) then game:start() end
-    if (btnp(5)) then game:start() end
+    if (btnp(4)) then game:start() player:flap() end
+    if (btnp(5)) then game:start() player:flap() end
   elseif not game.ended then
     game.timer += 1 
     game.score += 1 / 30
     
-    if(flr(game.timer) % 25 == 0 and flr(rnd(7)) == 1) then
+    if(flr(game.timer) % 25 == 0 and flr(rnd(3)) == 1) then
       b = balloon:new()
       b.dx = game.scroll_speed
       b:init()
       add(balloons, b)
     end
 
-    if (btnp(4)) then player:flap()  end
+    if (btn(4)) then 
+      if(player.flying) then
+        coresume(player.flying)
+      else
+        player:fly()
+      end
+    else
+      player.flying = nil
+    end
     if (btnp(5)) then player:flap()  end
     if (btn(0)) then player:move_left() end
     if (btn(1)) then player:move_right() end
@@ -139,7 +159,7 @@ function _update()
       end
 
       -- delete balloon on touch of walls
-      if(b.x < min_x - b.size) then 
+      if(b.x + b.width < min_x) then 
         del(balloons, b)
       end
     end
@@ -203,10 +223,11 @@ function _draw()
   -- score
   print("score: "..flr(game.score), 8, 16, 7)
 
-  -- water
-  rectfill(0, max_y, max_x, max_y - 10, 12)
+  if not game.started then
+    print(game.start_message, max_x / 2 - #game.start_message * 2, 3 * max_y / 4, 7)
+  end
 
   if game.game_over then
-    print("game over", max_x / 2 - 15, max_y / 2, 7)
+    print(game.game_over_message, max_x / 2 - #game.game_over_message * 2, max_y / 2, 7)
   end
 end
