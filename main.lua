@@ -1,3 +1,17 @@
+shake_intensity = 0
+shake_control = 5
+
+function shake()
+    local shake_x=rnd(shake_intensity) - (shake_intensity /2)
+    local shake_y=rnd(shake_intensity) - (shake_intensity /2)
+
+    --offset the camera
+    camera( shake_x, shake_y )
+
+    --ease shake and return to normal
+    shake_intensity *= .9
+    if shake_intensity < .3 then shake_intensity = 0 end
+end
 
 min_x = 0
 min_y = 0
@@ -107,6 +121,7 @@ function _update()
     for e in all(enemies) do
       e:update()
       if(not player.invincible and player:collide(e)) then
+        shake_intensity += shake_control
         player:damage()
         e:init()
       end
@@ -142,6 +157,9 @@ function _update()
     end
 
     player.ddy = game.grav
+
+    --run shake when intensity high
+    if shake_intensity > 0 then shake() end
 
   elseif game.ended then
 
