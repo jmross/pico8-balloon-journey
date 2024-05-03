@@ -63,7 +63,7 @@ end
 function player:draw()
   if self.visible then
     if self.lives > 0 then
-      spr(self.top_sprite, self.x, self.y, 1, 1, self.facing_left, false)
+      spr(self.top_sprite, self.x, self.y)
     else
       self.bottom_sprite = self.death_sprite
     end
