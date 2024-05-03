@@ -16,6 +16,8 @@ player = {
   top_sprite = 0,
   bottom_sprite = 16,
 
+  facing_left = false,
+
   x_accel = 0.25,
   y_accel = 1,
 
@@ -57,12 +59,13 @@ end
 
 function player:draw()
   if self.visible then
-    spr(self.top_sprite, self.x, self.y)
-    spr(self.bottom_sprite, self.x, self.y + sprite_height)
+    spr(self.top_sprite, self.x, self.y, 1, 1, self.facing_left, false)
+    spr(self.bottom_sprite, self.x, self.y + sprite_height, 1, 1, self.facing_left, false)
   end
 end
 
 function player:move_left()
+  self.facing_left = true
   if(self.ddy < 0) then
     self.ddx = -self.x_accel
   else
@@ -71,6 +74,7 @@ function player:move_left()
 end
 
 function player:move_right()
+  self.facing_left = false
   if(self.ddy < 0) then
     self.ddx = self.x_accel
   else
