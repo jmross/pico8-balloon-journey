@@ -42,6 +42,7 @@ game = {
   score = 0,
   timer = 0,
 
+  title = "balloon journey",
   start_message = "press ❎ or 🅾️ to start",
   game_over_message = "game over",
 
@@ -225,6 +226,7 @@ function _draw()
   print("score: "..flr(game.score), 8, 16, 7)
 
   if not game.started then
+    print(game.title, max_x / 2 - #game.title* 2, max_y / 4, 7)
     print(game.start_message, max_x / 2 - #game.start_message * 2, 3 * max_y / 4, 7)
   end
 
