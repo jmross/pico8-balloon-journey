@@ -3,8 +3,8 @@
 player = {
   lives = 3,
 
-  x = 64,
-  y = 64,
+  x = 0,
+  y = 0,
   dx = 0,
   dy = 0,
   ddx = 0,
@@ -12,6 +12,9 @@ player = {
 
   width = sprite_width,
   height = 2 * sprite_height,
+
+  top_sprite = 0,
+  bottom_sprite = 16,
 
   x_accel = 0.25,
   y_accel = 1,
@@ -54,7 +57,8 @@ end
 
 function player:draw()
   if self.visible then
-    spr(0, self.x, self.y)
+    spr(self.top_sprite, self.x, self.y)
+    spr(self.bottom_sprite, self.x, self.y + sprite_height)
   end
 end
 

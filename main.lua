@@ -69,6 +69,10 @@ function _init()
   -- disable btnp repeats
   poke(0X5F5C, 255)
 
+  -- place player
+  player.x = max_x / 2 - player.width / 2
+  player.y = max_y / 2
+
   -- create stars
   for i = 0,25 do
     s = star:new({
@@ -81,10 +85,9 @@ function _init()
   end
 
   -- starting platform
-  start_platform = platform:new({
-      x = max_x / 2 - 4,
-      y = max_y / 2 + 6
-    })
+  start_platform = platform:new()
+  start_platform.x = max_x / 2 - start_platform.width / 2
+  start_platform.y = max_y / 2 + player.height
   add(platforms, start_platform)
 
 end
