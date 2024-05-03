@@ -92,7 +92,7 @@ function _update()
     game.timer += 1 
     game.score += 1 / 30
     
-    if(flr(game.timer) % 25 == 0 and flr(rnd(7)) == 1) then
+    if(flr(game.timer) % 25 == 0 and flr(rnd(3)) == 1) then
       b = balloon:new()
       b.dx = game.scroll_speed
       b:init()
