@@ -205,9 +205,6 @@ function _draw()
   -- score
   print("score: "..flr(game.score), 8, 16, 7)
 
-  -- water
-  rectfill(0, max_y, max_x, max_y - 10, 12)
-
   if not game.started then
     print(game.start_message, max_x / 2 - #game.start_message * 2, 3 * max_y / 4, 7)
   end
