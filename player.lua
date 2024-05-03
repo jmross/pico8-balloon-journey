@@ -11,8 +11,8 @@ player = {
   ddx = 0,
   ddy = 0,
 
-  x_accel = 0.5,
-  y_accel = 1.5,
+  x_accel = 0.25,
+  y_accel = 1,
 
   max_x_speed = 2,
   max_y_speed = 2,
@@ -85,7 +85,7 @@ function player:fly()
     delay(5)
     while true do
       player:flap()
-      delay(10)
+      delay(5)
     end
   end)
 end
