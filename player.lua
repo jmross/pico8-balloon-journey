@@ -3,13 +3,15 @@
 player = {
   lives = 3,
 
-  size = 4,
   x = 64,
   y = 64,
   dx = 0,
   dy = 0,
   ddx = 0,
   ddy = 0,
+
+  width = sprite_width,
+  height = 2 * sprite_height,
 
   x_accel = 0.25,
   y_accel = 1,
@@ -73,10 +75,10 @@ function player:move_right()
 end
 
 function player:collide(o)
-  return ((self.x - self.size) <= (o.x + o.size) and
-          (self.x + self.size) >= (o.x - o.size) and
-          (self.y - self.size) <= (o.y + o.size) and
-          (self.y + self.size) >= (o.y - o.size))
+  return (self.x <= (o.x + o.width) and
+          (self.x + self.width) >= o.x and
+          self.y <= (o.y + o.height) and
+          (self.y + self.height) >= o.y)
 end
 
 function player:fly()
@@ -113,11 +115,11 @@ function player:update()
   if(abs(self.dx) < 0.01) then self.dx = 0 end
 
   -- bounce off ceiling
-  if(self.y < self.size) then self.dy = abs(self.dy) self.y = self.size end
+  if(self.y < min_y) then self.dy = abs(self.dy) end
 
   -- stop on left/right walls
-  if(self.x < self.size) then self.dx = 0 self.x = self.size end
-  if(self.x > max_x - self.size) then self.dx = 0 self.x = max_x - self.size end
+  if(self.x < min_x) then self.dx = 0 self.x = min_x end
+  if(self.x + self.width > max_x) then self.dx = 0 self.x = max_x - self.width end
 
   if self.invincible and costatus(self.invincible) != 'dead' then
     coresume(self.invincible)

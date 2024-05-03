@@ -7,7 +7,6 @@ balloon = {
   dy = 0,
   width = sprite_width,
   height = 2 * sprite_height,
-  size = 3, -- remove
   colour = 11,
   score = 10,
 
@@ -39,7 +38,7 @@ function balloon:draw()
 end
 
 function balloon:init()
-  self.x = max_x + self.size
+  self.x = max_x
   self.y = rnd(max_y)
   self.sprite_bottom = rnd(self.sprite_bottoms)
   local dx = self.dx

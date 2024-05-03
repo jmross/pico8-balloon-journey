@@ -3,7 +3,6 @@
 enemy = {
   width = sprite_width,
   height = sprite_height,
-  size = 2, -- remove
   x = 0,
   y = 0,
   dx = 0,
@@ -19,12 +18,12 @@ function enemy:update()
   self.x += self.dx
   self.y += self.dy
   -- bounce off ceiling
-  if(self.y < self.size) then self.dy = abs(self.dy) self.y = self.size end
+  if(self.y < min_y) then self.dy = abs(self.dy) self.y = min_y end
   -- bounce off floor
-  if(self.y > max_y - self.size) then self.dy = -abs(self.dy) self.y = max_y - self.size end
+  if(self.y + self.height > max_y) then self.dy = -abs(self.dy) self.y = max_y - self.height end
 
   -- re-init on touch of walls
-  if(self.x < min_x - self.size) then 
+  if(self.x + self.width < min_x) then 
     self:init()
   end
 

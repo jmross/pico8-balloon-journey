@@ -141,7 +141,7 @@ function _update()
       end
 
       -- delete balloon on touch of walls
-      if(b.x < min_x - b.size) then 
+      if(b.x + b.width < min_x) then 
         del(balloons, b)
       end
     end
