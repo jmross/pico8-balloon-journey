@@ -25,7 +25,6 @@ player = {
 
   max_x_speed = 2,
   max_y_speed = 2,
-  max_grav_speed = 2,
 
   x_resist = 0.98,
 
@@ -117,9 +116,7 @@ function player:flap()
     self.bottom_sprite = self.bottom_sprites[1]
   end)
 
-  if(self.dy > -self.max_y_speed) then
-    self.ddy = -self.y_accel
-  end
+  self.ddy = -self.y_accel
 end
 
 function player:update()
@@ -130,8 +127,8 @@ function player:update()
 
   if(self.dx > self.max_x_speed) then self.dx = self.max_x_speed end
   if(self.dx < -self.max_x_speed) then self.dx = -self.max_x_speed end
-  if(self.dy > self.max_grav_speed) then self.dy = self.max_grav_speed end
-  if(self.dy < -self.max_grav_speed) then self.dy = -self.max_grav_speed end
+  if(self.dy > self.max_y_speed) then self.dy = self.max_y_speed end
+  if(self.dy < -self.max_y_speed) then self.dy = -self.max_y_speed end
 
   -- slow down x speed over time
   self.dx *= self.x_resist
