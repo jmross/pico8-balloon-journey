@@ -39,7 +39,7 @@ end
 
 function balloon:init()
   self.x = max_x
-  self.y = rnd(max_y)
+  self.y = rnd(max_y) - self.height
   self.sprite_bottom = rnd(self.sprite_bottoms)
   local dx = self.dx
 
