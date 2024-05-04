@@ -74,8 +74,6 @@ function player:move_left()
   self.facing_left = true
   if(self.ddy < 0) then
     self.ddx = -self.x_accel
-  else
-    self.ddx = 0
   end
 end
 
@@ -83,8 +81,6 @@ function player:move_right()
   self.facing_left = false
   if(self.ddy < 0) then
     self.ddx = self.x_accel
-  else
-    self.ddx = 0
   end
 end
 
@@ -153,4 +149,6 @@ function player:update()
   else
     self.animate = nil
   end
+
+  self.ddx = 0
 end
